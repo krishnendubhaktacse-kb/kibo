@@ -10,6 +10,9 @@ node_modules
 !.yarn/releases
 !.yarn/versions
 
+# Sentry env files
+.env.sentry-build-plugin
+
 # testing
 coverage
 
