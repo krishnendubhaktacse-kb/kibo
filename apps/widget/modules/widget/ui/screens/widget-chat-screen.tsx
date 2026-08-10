@@ -8,6 +8,9 @@ import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import { Button } from "@workspace/ui/components/button";
 import { useAtomValue, useSetAtom } from "jotai";
 import { ArrowLeftIcon, MenuIcon } from "lucide-react";
+import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
+import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
+import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
 import { contactSessionIdAtomFamily, conversationIdAtom, organizationIdAtom, screenAtom } from "../../atoms/widget-atoms";
 import { Form, FormField } from "@workspace/ui/components/form";
 import { api } from "@workspace/backend/_generated/api";
@@ -54,6 +57,12 @@ export const WidgetChatScreen = () => {
       { initialNumItems: 10 },
   );
 
+  const { topElementRef, handleLoadMore, canLoadMore, isLoadingMore } = useInfiniteScroll({
+    status: messages.status,
+    loadMore: messages.loadMore,
+    loadSize: 10
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -99,6 +108,12 @@ export const WidgetChatScreen = () => {
     </WidgetHeader>
     <AIConversation>
       <AIConversationContent>
+        <InfiniteScrollTrigger 
+          canLoadMore={canLoadMore}
+          isLoadingMore={isLoadingMore}
+          onLoadMore={handleLoadMore}
+          ref={topElementRef}
+        />
         {toUIMessages(messages.results ?? []).map((message) => (
           <AIMessage
             from={message.role === "user" ? "user" : "assistant"}
@@ -117,6 +132,13 @@ export const WidgetChatScreen = () => {
                 return null;
               })}
             </AIMessageContent>
+            {message.role === "assistant" && (
+              <DicebearAvatar 
+                imageUrl="/logo.png"
+                seed="assistant"
+                size={32}
+              />
+            )}
           </AIMessage>
         ))}
       </AIConversationContent>
