@@ -37,7 +37,7 @@ export const WidgetChatScreen = () => {
     setScreen("selection");
   };
 
-  const conversation = useQuery(api.public.conversations.getOne, 
+  const conversation = useQuery(api.public.conversations.getOne,
     conversationId && contactSessionId
       ? {
           conversationId,

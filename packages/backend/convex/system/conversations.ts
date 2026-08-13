@@ -14,3 +14,24 @@ export const getByThreadId = internalQuery({
     return conversation;
   },
 });
+
+export const getOne = internalQuery({
+  args: {
+    conversationId: v.id("conversations"),
+    contactSessionId: v.id("contactSessions"),
+  },
+
+  handler: async (ctx, args) => {
+    const conversation = await ctx.db.get(args.conversationId);
+
+    if (!conversation) {
+      return null;
+    }
+
+    if (conversation.contactSessionId !== args.contactSessionId) {
+      return null;
+    }
+
+    return conversation;
+  },
+});

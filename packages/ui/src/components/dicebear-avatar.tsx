@@ -1,7 +1,7 @@
 "use client";
 
 import { glass } from "@dicebear/collection";
-import { Avatar } from "@dicebear/core";
+import { createAvatar } from "@dicebear/core";
 import { useMemo } from "react";
 import {
   Avatar as UIAvatar,
@@ -31,7 +31,7 @@ export const DicebearAvatar = ({
       return imageUrl;
     }
 
-    const avatar = new Avatar(glass, {
+    const avatar = createAvatar(glass, {
       seed: seed.toLowerCase().trim(),
       size,
     });
