@@ -11,7 +11,7 @@ import { Button } from "@workspace/ui/components/button";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import { useAtomValue, useSetAtom } from "jotai";
 import { contactSessionIdAtomFamily, conversationIdAtom, errorMessageAtom, organizationIdAtom, screenAtom } from "../../atoms/widget-atoms";
-import { useMutation } from "convex/react";
+import { useAction, useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 import { useState } from "react";
 import { WidgetFooter } from "../components/widget-footer";
@@ -26,6 +26,9 @@ export const WidgetSelectionScreen = () => {
   );
 
   const createConversation = useMutation(api.public.conversations.create);
+  const sendWelcomeMessage = useAction(
+    api.public.conversations.sendWelcomeMessage
+  );
   const [isPending, setIsPending] = useState(false);
 
   const handleNewConversation = async () => {
@@ -47,6 +50,11 @@ export const WidgetSelectionScreen = () => {
         const conversationId = await createConversation({
           contactSessionId,
           organizationId,
+        });
+
+        await sendWelcomeMessage({
+          conversationId,
+          contactSessionId,
         });
 
         setConversationId(conversationId);

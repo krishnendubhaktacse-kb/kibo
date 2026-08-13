@@ -6,13 +6,18 @@ import { cn } from "@workspace/ui/lib/utils"
 
 function ResizablePanelGroup({
   className,
+  orientation = "horizontal",
   ...props
-}: ResizablePrimitive.GroupProps) {
+}: ResizablePrimitive.GroupProps & {
+  orientation?: "horizontal" | "vertical";
+}) {
   return (
     <ResizablePrimitive.Group
+      orientation={orientation}
       data-slot="resizable-panel-group"
       className={cn(
-        "flex h-full w-full aria-[orientation=vertical]:flex-col",
+        "flex h-full w-full",
+        orientation === "vertical" && "flex-col",
         className
       )}
       {...props}

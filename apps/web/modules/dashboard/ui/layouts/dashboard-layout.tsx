@@ -20,15 +20,18 @@ export const DashboardLayout = async ({
   return (
     <AuthGuard>
       <OrganizationGuard>
-        <SidebarProvider defaultOpen={defaultOpen}>
+        <SidebarProvider
+          defaultOpen={defaultOpen}
+          className="h-svh min-h-0 overflow-hidden"
+        >
           <DashboardSidebar />
 
-        <SidebarInset>
+        <SidebarInset className="h-full min-h-0 min-w-0 overflow-hidden">
           <div className="flex h-14 items-center border-b px-4 md:hidden">
             <MobileSidebarTrigger />
           </div>
 
-          <main className="flex flex-1 flex-col">
+          <main className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
             {children}
           </main>
         </SidebarInset>

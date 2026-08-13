@@ -6,13 +6,18 @@ import { Button } from "@workspace/ui/components/button";
 
 export function MobileSidebarTrigger() {
   return (
-    <SidebarTrigger
-      className="md:hidden"
-      render={
-        <Button variant="ghost" size="icon">
-          <Menu className="size-5" />
-        </Button>
-      }
-    />
+    <div className="flex h-14 items-center border-b px-2 md:hidden">
+      <SidebarTrigger
+        render={
+          <Button variant="ghost" size="icon">
+            <Menu className="size-5" />
+          </Button>
+        }
+      />
+
+      <div className="ml-2">
+        <h1 className="text-sm font-semibold">Conversations</h1>
+      </div>
+    </div>
   );
 }
