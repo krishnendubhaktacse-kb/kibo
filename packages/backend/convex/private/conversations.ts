@@ -103,7 +103,6 @@ export const getMany = query({
 export const getOne = query({
   args: {
     conversationId: v.id("conversations"),
-    contactSessionId: v.id("contactSessions"),
   },
   handler: async (ctx, args) => {
     const conversation = await ctx.db.get(args.conversationId);
@@ -115,13 +114,17 @@ export const getOne = query({
       });
     }
 
-    if (conversation.contactSessionId !== args.contactSessionId) {
+    const contactSession = await ctx.db.get(conversation.contactSessionId);
+
+    if (!contactSession) {
       throw new ConvexError({
-        code: "UNAUTHORIZED",
-        message: "Conversation does not belong to this contact session",
+        code: "NOT_FOUND",
+        message: "Contact Session not found",
       });
     }
-
-    return conversation;
+    return {
+      ...conversation,
+      contactSession,
+    };
   },
 });

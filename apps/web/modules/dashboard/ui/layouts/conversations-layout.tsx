@@ -5,6 +5,7 @@ import {
   ResizablePanel,
   ResizablePanelGroup,
 } from "@workspace/ui/components/resizable";
+import { usePathname } from "next/navigation";
 
 import { ConversationsPanel } from "../components/conversations-panel";
 
@@ -13,6 +14,12 @@ export const ConversationsLayout = ({
 }: {
   children: React.ReactNode;
 }) => {
+  const pathname = usePathname();
+
+  const isConversationSelected =
+    pathname !== "/conversations" &&
+    pathname.startsWith("/conversations/");
+
   return (
     <div className="h-full min-h-0 w-full overflow-hidden">
       {/* Desktop */}
@@ -44,7 +51,9 @@ export const ConversationsLayout = ({
 
       {/* Mobile */}
       <div className="flex h-full min-h-0 w-full overflow-hidden md:hidden">
-        <ConversationsPanel />
+        <div className="h-full min-h-0 w-full min-w-0">
+          {isConversationSelected ? children : <ConversationsPanel />}
+        </div>
       </div>
     </div>
   );
