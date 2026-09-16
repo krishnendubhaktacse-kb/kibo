@@ -8,6 +8,7 @@ import {
 import { cookies } from "next/headers";
 import { DashboardSidebar } from "@/modules/dashboard/ui/components/dashboard-sidebar";
 import { MobileSidebarTrigger } from "@/modules/dashboard/ui/components/mobile-sidebar-trigger";
+import { Provider } from "jotai";
 
 export const DashboardLayout = async ({
   children,
@@ -20,6 +21,7 @@ export const DashboardLayout = async ({
   return (
     <AuthGuard>
       <OrganizationGuard>
+        <Provider>
         <SidebarProvider
           defaultOpen={defaultOpen}
           className="h-svh min-h-0 overflow-hidden"
@@ -27,15 +29,14 @@ export const DashboardLayout = async ({
           <DashboardSidebar />
 
         <SidebarInset className="h-full min-h-0 min-w-0 overflow-hidden">
-          <div className="flex h-14 items-center border-b px-4 md:hidden">
-            <MobileSidebarTrigger />
-          </div>
+          <MobileSidebarTrigger />
 
           <main className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
             {children}
           </main>
         </SidebarInset>
         </SidebarProvider>
+        </Provider>
       </OrganizationGuard>
     </AuthGuard>
   );
