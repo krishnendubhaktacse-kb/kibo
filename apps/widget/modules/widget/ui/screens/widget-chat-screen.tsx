@@ -11,15 +11,31 @@ import { ArrowLeftIcon, MenuIcon } from "lucide-react";
 import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 import { useInfiniteScroll } from "@workspace/ui/hooks/use-infinite-scroll";
 import { InfiniteScrollTrigger } from "@workspace/ui/components/infinite-scroll-trigger";
-import { contactSessionIdAtomFamily, conversationIdAtom, organizationIdAtom, screenAtom } from "../../atoms/widget-atoms";
+import {
+  contactSessionIdAtomFamily,
+  conversationIdAtom,
+  organizationIdAtom,
+  screenAtom,
+} from "../../atoms/widget-atoms";
 import { Form, FormField } from "@workspace/ui/components/form";
 import { api } from "@workspace/backend/_generated/api";
 import { useAction, useQuery } from "convex/react";
-import { AIConversation, AIConversationContent, AIConversationScrollButton } from "@workspace/ui/components/ai/conversation";
-import { AIInput, AIInputSubmit, AIInputTextarea, AIInputToolbar, AIInputTools } from "@workspace/ui/components/ai/input";
-import { AIMessage, AIMessageContent } from "@workspace/ui/components/ai/message";
+import {
+  AIConversation,
+  AIConversationContent,
+} from "@workspace/ui/components/ai/conversation";
+import {
+  AIInput,
+  AIInputSubmit,
+  AIInputTextarea,
+  AIInputToolbar,
+  AIInputTools,
+} from "@workspace/ui/components/ai/input";
+import {
+  AIMessage,
+  AIMessageContent,
+} from "@workspace/ui/components/ai/message";
 import { AIResponse } from "@workspace/ui/components/ai/response";
-import { AISuggestion, AISuggestions } from "@workspace/ui/components/ai/suggestion";
 
 const formSchema = z.object({
   message: z.string().min(1, "Message is required"),
@@ -30,37 +46,42 @@ export const WidgetChatScreen = () => {
   const setConversationId = useSetAtom(conversationIdAtom);
   const conversationId = useAtomValue(conversationIdAtom);
   const organizationId = useAtomValue(organizationIdAtom);
-  const contactSessionId = useAtomValue(contactSessionIdAtomFamily(organizationId || ""));
+  const contactSessionId = useAtomValue(
+    contactSessionIdAtomFamily(organizationId || ""),
+  );
 
   const onBack = () => {
     setConversationId(null);
     setScreen("selection");
   };
 
-  const conversation = useQuery(api.public.conversations.getOne,
+  const conversation = useQuery(
+    api.public.conversations.getOne,
     conversationId && contactSessionId
-      ? {
-          conversationId,
-          contactSessionId,
-        } 
-      : "skip"
+      ? { conversationId, contactSessionId }
+      : "skip",
   );
 
   const messages = useThreadMessages(
     api.public.messages.getMany,
-    conversation?.threadId && contactSessionId 
-        ? {
-            threadId: conversation.threadId,
-            contactSessionId,
-          }
-        : "skip",
-      { initialNumItems: 10 },
+    conversation?.threadId && contactSessionId
+      ? {
+          threadId: conversation.threadId,
+          contactSessionId,
+        }
+      : "skip",
+    { initialNumItems: 10 },
   );
 
-  const { topElementRef, handleLoadMore, canLoadMore, isLoadingMore } = useInfiniteScroll({
+  const {
+    topElementRef,
+    handleLoadMore,
+    canLoadMore,
+    isLoadingMore,
+  } = useInfiniteScroll({
     status: messages.status,
     loadMore: messages.loadMore,
-    loadSize: 10
+    loadSize: 10,
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -71,8 +92,9 @@ export const WidgetChatScreen = () => {
   });
 
   const createMessage = useAction(api.public.messages.create);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!conversation || !contactSessionId){
+    if (!conversation || !contactSessionId) {
       return;
     }
 
@@ -85,103 +107,113 @@ export const WidgetChatScreen = () => {
     });
   };
 
-
   return (
     <>
-    <WidgetHeader className="flex items-center justify-between">
-    <div className="flex items-center gap-x-2">
-          <Button
-            onClick={onBack}
-            size="icon"
-            variant="transparent"
-          >
+      <WidgetHeader className="flex items-center justify-between">
+        <div className="flex items-center gap-x-2">
+          <Button onClick={onBack} size="icon" variant="transparent">
             <ArrowLeftIcon />
           </Button>
           <p>Chat</p>
-    </div>
-    <Button
-    size="icon"
-    variant="transparent"
-    >
-      <MenuIcon />
-    </Button>
-    </WidgetHeader>
-    <AIConversation>
-      <AIConversationContent>
-        <InfiniteScrollTrigger 
-          canLoadMore={canLoadMore}
-          isLoadingMore={isLoadingMore}
-          onLoadMore={handleLoadMore}
-          ref={topElementRef}
-        />
-        {toUIMessages(messages.results ?? []).map((message) => (
-          <AIMessage
-            from={message.role === "user" ? "user" : "assistant"}
-            key={message.id}
-          >
-            <AIMessageContent>
-              {message.parts.map((part, index) => {
-                if (part.type === "text") {
-                  return (
-                    <AIResponse key={index}>
-                      {part.text}
-                    </AIResponse>
-                  );
-                }
+        </div>
+        <Button size="icon" variant="transparent">
+          <MenuIcon />
+        </Button>
+      </WidgetHeader>
 
-                return null;
-              })}
-            </AIMessageContent>
-            {message.role === "assistant" && (
-              <DicebearAvatar 
-                imageUrl="/logo.png"
-                seed="assistant"
-                size={32}
+      <AIConversation>
+        <AIConversationContent>
+          <InfiniteScrollTrigger
+            canLoadMore={canLoadMore}
+            isLoadingMore={isLoadingMore}
+            onLoadMore={handleLoadMore}
+            ref={topElementRef}
+          />
+
+          
+          {toUIMessages(messages.results ?? []).map((message) => {
+            
+          
+          const textParts = message.parts.filter(
+            (part) => part.type === "text"
+          );
+
+          const nonEmptyTextParts = textParts.filter(
+            (part) => part.text.trim().length > 0
+          );
+
+
+            if (nonEmptyTextParts.length === 0) {
+              return null;
+            }
+
+            return (
+              <AIMessage
+                from={message.role === "user" ? "user" : "assistant"}
+                key={message.id}
+              >
+                <AIMessageContent>
+                  {nonEmptyTextParts.map((part, index) => (
+                    <AIResponse key={index}>{part.text}</AIResponse>
+                  ))}
+                </AIMessageContent>
+
+                {message.role === "assistant" && (
+                  <DicebearAvatar
+                    imageUrl="/logo.png"
+                    seed="assistant"
+                    size={32}
+                  />
+                )}
+              </AIMessage>
+            );
+          })}
+
+        </AIConversationContent>
+      </AIConversation>
+
+      <Form {...form}>
+        <AIInput
+          className="rounded-none border-x-0 border-b-0"
+          onSubmit={form.handleSubmit(onSubmit)}
+        >
+          <FormField
+            control={form.control}
+            disabled={conversation?.status === "resolved"}
+            name="message"
+            render={({ field }) => (
+              <AIInputTextarea
+                disabled={conversation?.status === "resolved"}
+                onChange={field.onChange}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    form.handleSubmit(onSubmit)();
+                  }
+                }}
+                placeholder={
+                  conversation?.status === "resolved"
+                    ? "This conversation has been resolved."
+                    : "Type your message..."
+                }
+                value={field.value}
               />
             )}
-          </AIMessage>
-        ))}
-      </AIConversationContent>
-    </AIConversation>
-    <Form {...form}>
-      <AIInput
-        className="rounded-none border-x-0 border-b-0"
-        onSubmit={form.handleSubmit(onSubmit)}
-      >
-        <FormField
-          control={form.control}
-          disabled={conversation?.status === "resolved"}
-          name="message"
-          render={({ field }) => (
-            <AIInputTextarea
-              disabled={conversation?.status === "resolved"}
-              onChange={field.onChange}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" && !e.shiftKey) {
-                  e.preventDefault();
-                  form.handleSubmit(onSubmit)();
-                }
-              }}
-              placeholder={
-                conversation?.status === "resolved"
-                  ? "This conversation has been resolved."
-                  : "Type your message..."
-              }
-              value={field.value}
-            />
-          )}
-        />
-        <AIInputToolbar>
-          <AIInputTools />
-          <AIInputSubmit 
-            disabled={conversation?.status === "resolved" || !form.formState.isValid}
-            status="ready"
-            type="submit"
           />
-        </AIInputToolbar>
 
-      </AIInput>
-    </Form>
+          <AIInputToolbar>
+            <AIInputTools />
+            <AIInputSubmit
+              disabled={
+                conversation?.status === "resolved" ||
+                !form.formState.isValid
+              }
+              status="ready"
+              type="submit"
+            />
+          </AIInputToolbar>
+        </AIInput>
+      </Form>
     </>
   );
 };
