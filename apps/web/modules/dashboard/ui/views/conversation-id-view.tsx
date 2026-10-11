@@ -209,33 +209,47 @@ export const ConversationIdView = ({
             onLoadMore={handleLoadMore}
             ref={topElementRef}
         />
-        {toUIMessages(messages.results ?? [])?.map((message) => (
-          <AIMessage
-            from={message.role === "user" ? "user" : "assistant"}
-            key={message.id}
-          >
-            <AIMessageContent>
-              <AIResponse>
-                {message.parts
-                  .filter((part) => part.type === "text")
-                  .map((part) => part.text)
-                  .join("")}
-              </AIResponse>
-            </AIMessageContent>
-            {message.role === "user" ? (
-              <DicebearAvatar
-                seed={conversation?.contactSessionId ?? "user"}
-                size={32}
-              />
-            ) : (
-              <img
-                src="/logo.png"
-                alt="KIBO"
-                className="size-8 rounded-full object-cover"
-              />
-            )}
-          </AIMessage>
-        ))}
+        
+          {toUIMessages(messages.results ?? []).map((message) => {
+            const textParts = message.parts.filter(
+              (part) => part.type === "text"
+            );
+
+            const nonEmptyTextParts = textParts.filter(
+              (part) => part.text.trim().length > 0
+            );
+
+            if (nonEmptyTextParts.length === 0) {
+              return null;
+            }
+
+            return (
+              <AIMessage
+                from={message.role === "user" ? "user" : "assistant"}
+                key={message.id}
+              >
+                <AIMessageContent>
+                  <AIResponse>
+                    {nonEmptyTextParts.map((part) => part.text).join("")}
+                  </AIResponse>
+                </AIMessageContent>
+
+                {message.role === "user" ? (
+                  <DicebearAvatar
+                    seed={conversation?.contactSessionId ?? "user"}
+                    size={32}
+                  />
+                ) : (
+                  <img
+                    src="/logo.png"
+                    alt="KIBO"
+                    className="size-8 rounded-full object-cover"
+                  />
+                )}
+              </AIMessage>
+            );
+          })}
+
         </AIConversationContent>
         <AIConversationScrollButton />
       </AIConversation>
