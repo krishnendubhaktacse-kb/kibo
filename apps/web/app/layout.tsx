@@ -4,6 +4,7 @@ import { ClerkProvider } from '@clerk/nextjs'
 import "@workspace/ui/globals.css"
 import { Providers } from "@/components/providers"
 import { cn } from "@workspace/ui/lib/utils";
+import { Toaster } from "@workspace/ui/components/sonner";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
@@ -25,7 +26,7 @@ export default function RootLayout({
     >
       <body>
         <ClerkProvider>
-        <Providers>{children}</Providers>
+        <Providers><Toaster />{children}</Providers>
         </ClerkProvider>
       </body>
     </html>
