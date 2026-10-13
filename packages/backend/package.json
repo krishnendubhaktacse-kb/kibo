@@ -20,6 +20,7 @@
     "@convex-dev/agent": "^0.6.4",
     "@convex-dev/agent-playground": "^0.0.23",
     "@convex-dev/rag": "^0.7.7",
+    "@vapi-ai/server-sdk": "^3.0.0",
     "ai": "6.0.246",
     "convex": "^1.43.0",
     "convex-helpers": "^0.1.122",
