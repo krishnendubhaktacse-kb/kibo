@@ -47,7 +47,7 @@ const menuGroups = [
     items: [
       {
         title: "Widget Customization",
-        url: "/customizations",
+        url: "/customization",
         icon: PaletteIcon,
       },
       {

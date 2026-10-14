@@ -28,10 +28,10 @@ export const DashboardLayout = async ({
         >
           <DashboardSidebar />
 
-        <SidebarInset className="h-full min-h-0 min-w-0 overflow-hidden">
+        <SidebarInset className="h-full min-h-0 min-w-0 overflow-y-auto">
           <MobileSidebarTrigger />
 
-          <main className="flex h-full min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
+          <main className="flex min-h-0 min-w-0 flex-1 flex-col">
             {children}
           </main>
         </SidebarInset>
