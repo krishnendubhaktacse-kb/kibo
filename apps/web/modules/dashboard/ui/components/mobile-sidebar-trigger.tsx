@@ -13,14 +13,14 @@ export function MobileSidebarTrigger() {
     ({
       "/conversations": "Conversations",
       "/files": "Knowledge Base",
-      "/customizations": "Widget Customization",
+      "/customization": "Widget Customization",
       "/integrations": "Integrations",
       "/plugins/vapi": "Voice Assistant",
       "/billing": "Plans & Billing",
     } as Record<string, string>)[pathname] ?? "Dashboard";
 
   return (
-    <div className="relative flex h-14 items-center border-b px-2 md:hidden">
+    <div className="sticky top-0 z-50 flex h-14 items-center border-b bg-background px-2 md:hidden">
       <SidebarTrigger
         render={
           <Button variant="ghost" size="icon">
