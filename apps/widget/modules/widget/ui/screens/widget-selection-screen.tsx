@@ -55,6 +55,7 @@ export const WidgetSelectionScreen = () => {
         await sendWelcomeMessage({
           conversationId,
           contactSessionId,
+          organizationId,
         });
 
         setConversationId(conversationId);

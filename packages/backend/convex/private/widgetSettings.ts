@@ -1,5 +1,5 @@
 import { ConvexError, v } from "convex/values";
-import { mutation, query } from "../_generated/server";
+import { internalMutation, internalQuery, mutation, query } from "../_generated/server";
 
 export const upsert = mutation({
     args: {
@@ -83,4 +83,18 @@ export const getOne = query({
 
                         return widgetSettings;
     },
+});
+
+export const getByOrganization = internalQuery({
+  args: {
+    organizationId: v.string(),
+  },
+  handler: async (ctx, args) => {
+    return await ctx.db
+      .query("widgetSettings")
+      .withIndex("by_organization_id", (q) =>
+        q.eq("organizationId", args.organizationId),
+      )
+      .unique();
+  },
 });
