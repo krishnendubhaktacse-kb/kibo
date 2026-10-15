@@ -47,6 +47,7 @@ export const sendWelcomeMessage = action({
   args: {
     conversationId: v.id("conversations"),
     contactSessionId: v.id("contactSessions"),
+    organizationId: v.string(),
   },
 
   handler: async (ctx, args) => {
@@ -65,11 +66,16 @@ export const sendWelcomeMessage = action({
       });
     }
 
+    const widgetSettings = await ctx.runQuery(
+      internal.private.widgetSettings.getByOrganization,
+      { organizationId: args.organizationId },
+    );
+
     await saveMessage(ctx, components.agent, {
       threadId: conversation.threadId,
       message: {
         role: "assistant",
-        content: "Hello there! I'm KIBO. How can I help you today?",
+        content: widgetSettings?.greetMessage || "Hello there! I'm KIBO. How can I help you today?",
       },
     });
   },
