@@ -42,7 +42,7 @@ export const VapiFormFields = ({
                     value={field.value}
                 >
                     <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="w-fit min-w-0">
                             <SelectValue>
                                 {assistants.find(
                                     (assistant) => assistant.id === field.value
@@ -54,7 +54,7 @@ export const VapiFormFields = ({
                                 </SelectValue>
                         </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="w-max min-w-[var(--radix-select-trigger-width)]">
                         <SelectItem value="none">None</SelectItem>
                         {assistants.map((assistant)=>(
                             <SelectItem key={assistant.id} value={assistant.id}>
@@ -83,7 +83,7 @@ export const VapiFormFields = ({
                     value={field.value}
                 >
                     <FormControl>
-                        <SelectTrigger>
+                        <SelectTrigger className="w-fit min-w-0">
                             <SelectValue 
                                 placeholder={
                                     assistantsLoading
@@ -93,7 +93,7 @@ export const VapiFormFields = ({
                             />
                         </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    <SelectContent className="w-max min-w-[var(--radix-select-trigger-width)]">
                         <SelectItem value="none">None</SelectItem>
                         {phoneNumbers.map((phone)=>(
                             <SelectItem key={phone.id} value={phone.number || phone.id}>
