@@ -26,7 +26,11 @@ export default function RootLayout({
     >
       <body>
         <ClerkProvider>
-        <Providers><Toaster />{children}</Providers>
+        <Providers><Toaster />
+        <div className="h-svh w-full">
+        {children}
+        </div>
+        </Providers>
         </ClerkProvider>
       </body>
     </html>

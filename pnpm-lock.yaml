@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@vapi-ai/web>@daily-co/daily-js': 0.93.0
+
 importers:
 
   .:
@@ -141,12 +144,15 @@ importers:
       '@convex-dev/agent':
         specifier: ^0.6.4
         version: 0.6.4(@ai-sdk/provider-utils@5.0.25(zod@4.4.3))(ai@6.0.246(zod@4.4.3))(convex-helpers@0.1.122(@standard-schema/spec@1.1.0)(convex@1.42.1(@clerk/react@6.11.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(hono@4.12.27)(react@19.2.4)(typescript@5.9.3)(zod@4.4.3))(convex@1.42.1(@clerk/react@6.11.4(react-dom@19.2.4(react@19.2.4))(react@19.2.4))(react@19.2.4))(react@19.2.4)
+      '@daily-co/daily-js':
+        specifier: ^0.93.0
+        version: 0.93.0
       '@hookform/resolvers':
         specifier: ^5.7.1
         version: 5.7.1(@standard-schema/spec@1.1.0)(ajv-formats@2.1.1(ajv@8.20.0))(ajv@8.20.0)(react-hook-form@7.84.0(react@19.2.4))(zod@4.4.3)
       '@vapi-ai/web':
-        specifier: ^2.6.1
-        version: 2.6.1
+        specifier: ^2.7.1
+        version: 2.7.1
       '@workspace/backend':
         specifier: workspace:*
         version: link:../../packages/backend
@@ -787,9 +793,9 @@ packages:
       convex: ^1.36.1
       convex-helpers: ^0.1.94
 
-  '@daily-co/daily-js@0.87.0':
-    resolution: {integrity: sha512-hWHdBDvJwDeg8unz+XG9hD7xamuFi5Jmsk89ASATKL4fdTDHplpxi4PG9aaPXzBZYYLTjuxUje1K7B5uUR+gzw==}
-    engines: {node: '>=10.0.0'}
+  '@daily-co/daily-js@0.93.0':
+    resolution: {integrity: sha512-KDo/GuEILe3s7xyIiGSt1mCrtRgSoI7040zoZ+gGWt41mX71/6UhR7AaiyiSg3o7uHXInXPZa9zJ/rJOkrekEQ==}
+    engines: {node: '>=22.14.0'}
 
   '@date-fns/tz@1.5.0':
     resolution: {integrity: sha512-lwYN/vDPeNRULcepoE/LO2Pgx+7/RV+S9ARfbc9lr2DtGkOD7pAiruHvbR1RX3Qyf6ja47EWJDMsNK5vK08DJg==}
@@ -3676,8 +3682,8 @@ packages:
     resolution: {integrity: sha512-BE7HXh+3KbCWHcxtjxbw9TqtegtKMlJNZRM/C+OWBLz2bAjP0nXzthk0+Oy058nz2Eo1bhKid/Fc25KCHZBv7w==}
     engines: {node: '>=18.0.0'}
 
-  '@vapi-ai/web@2.6.1':
-    resolution: {integrity: sha512-Ln5b0nCj7Czvtva3Xb5R3lYhhU1WrzvrAC1PXEBIiFXLNgqxfKdOxMdBuO0m4++u0IuMa6Ck5zHedoqKEcuRSw==}
+  '@vapi-ai/web@2.7.1':
+    resolution: {integrity: sha512-074wXF2NdljXWv6rw0VQyIamMS8u5qsBejJBOLrcd9mT9z9xbQbd8Zu5CKe2UXdsxYpCzDYopsISE2EnwvaKSA==}
     engines: {node: '>=18.0.0'}
 
   '@vercel/oidc@3.2.0':
@@ -7516,7 +7522,7 @@ snapshots:
     transitivePeerDependencies:
       - react
 
-  '@daily-co/daily-js@0.87.0':
+  '@daily-co/daily-js@0.93.0':
     dependencies:
       '@babel/runtime': 7.29.7
       '@sentry/browser': 8.55.2
@@ -9158,7 +9164,7 @@ snapshots:
 
   '@radix-ui/rect@1.1.3': {}
 
-  '@reduxjs/toolkit@2.12.0(react-redux@9.3.0(@types/react@19.2.15)(react@19.2.4)(redux@5.0.1))(react@19.2.4)':
+  '@reduxjs/toolkit@2.12.0(react-redux@9.3.0(@types/react@19.2.15)(react@19.2.4))(react@19.2.4)':
     dependencies:
       '@standard-schema/spec': 1.1.0
       '@standard-schema/utils': 0.3.0
@@ -9994,9 +10000,9 @@ snapshots:
 
   '@vapi-ai/server-sdk@3.0.0': {}
 
-  '@vapi-ai/web@2.6.1':
+  '@vapi-ai/web@2.7.1':
     dependencies:
-      '@daily-co/daily-js': 0.87.0
+      '@daily-co/daily-js': 0.93.0
       events: 3.3.0
 
   '@vercel/oidc@3.2.0': {}
@@ -12593,7 +12599,7 @@ snapshots:
 
   recharts@3.8.0(@types/react@19.2.15)(react-dom@19.2.4(react@19.2.4))(react-is@16.13.1)(react@19.2.4)(redux@5.0.1):
     dependencies:
-      '@reduxjs/toolkit': 2.12.0(react-redux@9.3.0(@types/react@19.2.15)(react@19.2.4)(redux@5.0.1))(react@19.2.4)
+      '@reduxjs/toolkit': 2.12.0(react-redux@9.3.0(@types/react@19.2.15)(react@19.2.4))(react@19.2.4)
       clsx: 2.1.1
       decimal.js-light: 2.5.1
       es-toolkit: 1.49.0
