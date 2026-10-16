@@ -6,3 +6,6 @@ allowBuilds:
   sharp: true
   unrs-resolver: true
   msw: false
+
+overrides:
+  "@vapi-ai/web>@daily-co/daily-js": "0.93.0"
