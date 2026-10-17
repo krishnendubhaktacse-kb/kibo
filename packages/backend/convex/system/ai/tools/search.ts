@@ -3,7 +3,6 @@ import { createTool } from "@convex-dev/agent";
 import { generateText } from "ai";
 import { z } from "zod";
 import { internal } from "../../../_generated/api";
-import { supportAgent } from "../agents/supportAgent";
 import rag from "../rag";
 import { SEARCH_INTERPRETER_PROMPT } from "../constants";
 
@@ -60,14 +59,6 @@ ${searchResult.text}
       prompt: `User question: ${args.query}
 
 ${contextText}`,
-    });
-
-    await supportAgent.saveMessage(ctx, {
-      threadId: ctx.threadId,
-      message: {
-        role: "assistant",
-        content: response.text,
-      },
     });
 
     return response.text;

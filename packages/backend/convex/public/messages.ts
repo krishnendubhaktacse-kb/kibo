@@ -54,18 +54,20 @@ export const create = action({
         conversation.status === "unresolved";
 
         if (shouldTriggerAgent) {
+
     await supportAgent.generateText(
-        ctx,
-        { threadId: args.threadId },
-        {
-            prompt: args.prompt,
-            tools: {
-                escalateConversationTool: escalateConversation,
-                resolveConversationTool: resolveConversation,
-                searchTool: search,
-            }
-        }
-    )
+      ctx,
+      { threadId: args.threadId },
+      {
+        prompt: args.prompt,
+        tools: {
+          escalateConversationTool: escalateConversation,
+          resolveConversationTool: resolveConversation,
+          searchTool: search,
+        },
+      }
+    );
+
     } else {
         await saveMessage(ctx, components.agent, {
             threadId: args.threadId,

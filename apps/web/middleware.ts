@@ -21,10 +21,12 @@ export default clerkMiddleware(async (auth, req) => {
     }
 
     if (userId && !orgId && !isOrgFreeRoute(req)) {
-      const searchParams = new URLSearchParams({ redirectUrl: req.url });
+      const searchParams = new URLSearchParams({
+        redirectUrl: req.url,
+      });
 
       const orgSelection = new URL(
-        '/org-selection?&{searchParams}',
+        `/org-selection?${searchParams.toString()}`,
         req.url,
       );
 

@@ -110,18 +110,28 @@ export const WidgetChatScreen = () => {
   const createMessage = useAction(api.public.messages.create);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    if (!conversation || !contactSessionId) {
-      return;
-    }
+  if (!conversation || !contactSessionId) {
+    console.error("Missing conversation or contact session", {
+      conversation,
+      contactSessionId,
+    });
+    return;
+  }
 
-    form.reset();
+  form.reset();
 
-    await createMessage({
+  try {
+    const result = await createMessage({
       threadId: conversation.threadId,
       prompt: values.message,
       contactSessionId,
     });
-  };
+
+    console.log("KIBO message action completed:", result);
+  } catch (error) {
+    console.error("KIBO message action failed:", error);
+  }
+};
 
   return (
     <>
