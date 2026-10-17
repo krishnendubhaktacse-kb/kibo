@@ -7,7 +7,15 @@ import { api } from "@workspace/backend/_generated/api";
 import { Id } from "@workspace/backend/_generated/dataModel";
 import { Button } from "@workspace/ui/components/button";
 import { useAction, useMutation, useQuery } from "convex/react";
-import { ArrowLeftIcon, MoreHorizontalIcon, Wand2Icon } from "lucide-react";
+import {
+  ArrowLeftIcon,
+  ContactRoundIcon,
+  MoreHorizontalIcon,
+  XIcon,
+  Wand2Icon,
+} from "lucide-react";
+import { ContactPanel } from "../components/contact-panel";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
     AIConversation,
@@ -34,7 +42,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DicebearAvatar } from "@workspace/ui/components/dicebear-avatar";
 import { ConversationStatusButton } from "../components/conversation-status-button";
-import { useState } from "react";
 import { cn } from "@workspace/ui/lib/utils";
 import { Skeleton } from "@workspace/ui/components/skeleton";
 
@@ -48,6 +55,7 @@ export const ConversationIdView = ({
   conversationId: Id<"conversations">;
 }) => {
   const router = useRouter();
+  const [isContactPanelOpen, setIsContactPanelOpen] = useState(false);
   const conversation = useQuery(api.private.conversations.getOne, {
     conversationId,
   });
@@ -144,12 +152,24 @@ export const ConversationIdView = ({
       }
     };
 
-    if (conversation === undefined || messages.status === "LoadingFirstPage"){
-      return <ConversationIdViewLoading />
-    }
+    if (conversation === undefined) {
+  return <ConversationIdViewLoading />;
+}
+
+if (conversation === null) {
+  return (
+    <div className="flex h-full items-center justify-center">
+      Conversation not found or you don't have access.
+    </div>
+  );
+}
+
+if (messages.status === "LoadingFirstPage") {
+  return <ConversationIdViewLoading />;
+}
 
   return (
-    <div className="flex h-full flex-col bg-muted">
+    <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-muted">
       <header className="flex items-center border-b bg-background p-2.5">
         {/* Mobile back button */}
         <Button
@@ -157,6 +177,7 @@ export const ConversationIdView = ({
           size="icon"
           variant="ghost"
           onClick={() => router.push("/conversations")}
+          aria-label="Back to conversations"
         >
           <ArrowLeftIcon className="size-5" />
         </Button>
@@ -192,17 +213,19 @@ export const ConversationIdView = ({
           </div>
         )}
 
-        {/* Mobile more button */}
+        {/* Mobile contact button */}
         <Button
           className="ml-2 md:hidden"
-          size="sm"
+          size="icon"
           variant="ghost"
+          onClick={() => setIsContactPanelOpen(true)}
+          aria-label="Open contact details"
         >
-          <MoreHorizontalIcon />
+          <ContactRoundIcon className="size-5" />
         </Button>
       </header>
-      <AIConversation className="max-h-[calc(100vh-180px)]">
-        <AIConversationContent>
+      <AIConversation className="min-h-0 min-w-0 flex-1">
+        <AIConversationContent className="min-w-0">
           <InfiniteScrollTrigger
             canLoadMore={canLoadMore}
             isLoadingMore={isLoadingMore}
@@ -313,20 +336,41 @@ export const ConversationIdView = ({
           </AIInput>
         </Form>
       </div>
+      {isContactPanelOpen && (
+  <div className="fixed inset-0 z-50 bg-background md:hidden">
+    <div className="flex h-full flex-col">
+      <div className="flex h-14 items-center justify-between border-b px-4">
+        <h2 className="font-semibold">Contact Details</h2>
+        <Button
+          size="icon"
+          variant="ghost"
+          onClick={() => setIsContactPanelOpen(false)}
+          aria-label="Close contact details"
+        >
+          <XIcon className="size-5" />
+        </Button>
+      </div>
+
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        <ContactPanel />
+      </div>
+    </div>
+  </div>
+)}
     </div>
   );
 };
 
 export const ConversationIdViewLoading = () => {
   return (
-    <div className="flex h-full flex-col bg-muted">
+    <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-muted">
       <header className="flex items-center justify-between border-b bg-background p-2.5">
         <Button disabled size="sm" variant="ghost">
           <MoreHorizontalIcon />
         </Button>
       </header>
-      <AIConversation className="max-h-[calc(100vh-180px)]">
-          <AIConversationContent>
+      <AIConversation className="min-h-0 min-w-0 flex-1">
+          <AIConversationContent className="min-w-0">
       {Array.from({ length: 8 }, (_, index) => {
         const isUser = index % 2 === 0;
         const widths = ["w-48", "w-60", "w-72"];

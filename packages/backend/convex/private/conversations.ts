@@ -155,6 +155,24 @@ export const getOne = query({
     conversationId: v.id("conversations"),
   },
   handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (!identity) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Identity not found",
+      });
+    }
+
+    const orgId = identity.orgId as string;
+
+    if (!orgId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Organization not found",
+      });
+    }
+
     const conversation = await ctx.db.get(args.conversationId);
 
     if (!conversation) {
@@ -164,7 +182,16 @@ export const getOne = query({
       });
     }
 
-    const contactSession = await ctx.db.get(conversation.contactSessionId);
+    if (conversation.organizationId !== orgId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Invalid Organization ID",
+      });
+    }
+
+    const contactSession = await ctx.db.get(
+      conversation.contactSessionId,
+    );
 
     if (!contactSession) {
       throw new ConvexError({
@@ -172,6 +199,7 @@ export const getOne = query({
         message: "Contact Session not found",
       });
     }
+
     return {
       ...conversation,
       contactSession,
