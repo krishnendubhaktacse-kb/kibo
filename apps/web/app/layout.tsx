@@ -25,7 +25,13 @@ export default function RootLayout({
       className={cn("antialiased", fontMono.variable, "font-sans", geist.variable)}
     >
       <body>
-        <ClerkProvider>
+        <ClerkProvider
+          appearance={{
+            variables: {
+              colorPrimary: "#266cee"
+            }
+          }}
+        >
         <Providers><Toaster />
         <div className="h-svh w-full">
         {children}
