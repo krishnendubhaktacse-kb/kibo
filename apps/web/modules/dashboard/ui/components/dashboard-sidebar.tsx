@@ -88,7 +88,10 @@ export const DashboardSidebar = () => {
   };
 
   return (
-    <Sidebar collapsible="offcanvas">
+    <Sidebar
+      collapsible="offcanvas"
+      className="border-r border-border/60 shadow-[2px_0_8px_rgba(0,0,0,0.04)]"
+    >
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem>
