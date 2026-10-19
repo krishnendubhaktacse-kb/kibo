@@ -28,6 +28,10 @@ export const create = mutation({
       });
     }
 
+    await ctx.runMutation(internal.system.contactSessions.refresh, {
+            contactSessionId: args.contactSessionId,
+        });
+
     const { threadId } = await supportAgent.createThread(ctx, {
       userId: args.contactSessionId,
     });
@@ -63,6 +67,13 @@ export const sendWelcomeMessage = action({
       throw new ConvexError({
         code: "NOT_FOUND",
         message: "Conversation not found",
+      });
+    }
+
+    if (conversation.organizationId !== args.organizationId) {
+      throw new ConvexError({
+        code: "UNAUTHORIZED",
+        message: "Conversation does not belong to this organization",
       });
     }
 
