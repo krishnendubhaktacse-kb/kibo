@@ -19,11 +19,11 @@
     "@clerk/backend": "^3.16.0",
     "@convex-dev/agent": "^0.6.4",
     "@convex-dev/agent-playground": "^0.0.23",
-    "@convex-dev/rag": "^0.7.7",
+    "@convex-dev/rag": "^0.6.8",
     "@vapi-ai/server-sdk": "^3.0.0",
     "ai": "6.0.246",
-    "convex": "^1.43.0",
-    "convex-helpers": "^0.1.122",
+    "convex": "^1.47.0",
+    "convex-helpers": "^0.1.128",
     "svix": "^2.8.0",
     "zod": "3.25.67"
   }

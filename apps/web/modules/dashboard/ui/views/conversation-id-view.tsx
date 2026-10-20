@@ -10,7 +10,6 @@ import { useAction, useMutation, useQuery } from "convex/react";
 import {
   ArrowLeftIcon,
   ContactRoundIcon,
-  MoreHorizontalIcon,
   XIcon,
   Wand2Icon,
 } from "lucide-react";
@@ -182,15 +181,6 @@ if (messages.status === "LoadingFirstPage") {
           aria-label="Back to conversations"
         >
           <ArrowLeftIcon className="size-5" />
-        </Button>
-
-        {/* Desktop more button */}
-        <Button
-          className="hidden md:inline-flex"
-          size="sm"
-          variant="ghost"
-        >
-          <MoreHorizontalIcon />
         </Button>
 
         {/* Desktop status button */}
@@ -366,11 +356,7 @@ if (messages.status === "LoadingFirstPage") {
 export const ConversationIdViewLoading = () => {
   return (
     <div className="flex h-full min-h-0 min-w-0 flex-col overflow-hidden bg-muted">
-      <header className="flex items-center justify-between border-b bg-background p-2.5">
-        <Button disabled size="sm" variant="ghost">
-          <MoreHorizontalIcon />
-        </Button>
-      </header>
+      <header className="flex items-center justify-between border-b bg-background p-2.5" />
       <AIConversation className="min-h-0 min-w-0 flex-1">
           <AIConversationContent className="min-w-0">
       {Array.from({ length: 8 }, (_, index) => {
