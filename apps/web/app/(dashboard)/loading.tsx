@@ -1,7 +1,7 @@
 export default function Loading() {
   return (
     <div
-      className="flex min-h-[240px] flex-col items-center justify-center gap-4"
+      className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-4 bg-background/80 backdrop-blur-sm"
       role="status"
       aria-label="Loading page"
     >
