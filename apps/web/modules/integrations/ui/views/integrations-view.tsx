@@ -94,7 +94,7 @@ export const IntegrationsView = () => {
                                 key={integration.id}
                                 onClick={() => handleIntegrationClick(integration.id)}
                                 type="button"
-                                className="flex items-center gap-4 rounded-lg border bg-background p-4 hover:bg-accent"
+                                className="flex min-w-0 items-center gap-2 overflow-hidden rounded-lg border bg-background p-3 hover:bg-accent sm:gap-4 sm:p-4"
                             >
                             <Image
                                 alt={integration.title}
@@ -102,7 +102,7 @@ export const IntegrationsView = () => {
                                 src={integration.icon}
                                 width={32}
                             />
-                            <p>{integration.title}</p>
+                            <p className="min-w-0 break-words">{integration.title}</p>
                             </button>
                         ))}
                     </div>
@@ -147,8 +147,8 @@ export const IntegrationsDialog = ({
                     1. Copy the following code
                 </div>
                 <div className="group relative">
-                    <pre className="min-w-0 max-w-full max-h-[300px] overflow-x-auto overflow-y-auto whitespace-pre-wrap break-all rounded-md bg-foreground p-3 font-mono text-secondary text-sm leading-relaxed">
-                        {snippet}
+                    <pre className="max-h-[300px] overflow-x-auto overflow-y-auto whitespace-pre-wrap break-all rounded-md bg-foreground p-2 font-mono text-secondary text-sm">
+                    {snippet}
                     </pre>
                     <Button
                         className="absolute top-4 right-6 size-6 opacity-0 transition-opacity group-hover:opacity-100"
