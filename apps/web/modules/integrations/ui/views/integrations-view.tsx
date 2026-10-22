@@ -147,8 +147,8 @@ export const IntegrationsDialog = ({
                     1. Copy the following code
                 </div>
                 <div className="group relative">
-                    <pre className="max-h-[300px] overflow-x-auto overflow-y-auto whitespace-pre-wrap break-all rounded-md bg-foreground p-2 font-mono text-secondary text-sm">
-                    {snippet}
+                    <pre className="min-w-0 max-w-full max-h-[300px] overflow-x-auto overflow-y-auto whitespace-pre-wrap break-all rounded-md bg-foreground p-3 font-mono text-secondary text-sm leading-relaxed">
+                        {snippet}
                     </pre>
                     <Button
                         className="absolute top-4 right-6 size-6 opacity-0 transition-opacity group-hover:opacity-100"
