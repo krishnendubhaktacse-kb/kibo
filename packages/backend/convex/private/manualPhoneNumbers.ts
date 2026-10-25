@@ -77,3 +77,45 @@ export const remove = mutation({
     await ctx.db.delete(args.id);
   },
 });
+
+export const saveAll = mutation({
+  args: {
+    contacts: v.array(
+      v.object({
+        name: v.string(),
+        phoneNumber: v.string(),
+      }),
+    ),
+  },
+  handler: async (ctx, args) => {
+    const organizationId = await getOrganizationId(ctx);
+
+    const contacts = args.contacts.map((contact) => ({
+      name: contact.name.trim(),
+      phoneNumber: contact.phoneNumber.trim(),
+    }));
+
+    if (contacts.some((contact) => !contact.name || !contact.phoneNumber)) {
+      throw new ConvexError("Every contact must have a name and phone number");
+    }
+
+    const existingContacts = await ctx.db
+      .query("manualPhoneNumbers")
+      .withIndex("by_organization_id", (q) =>
+        q.eq("organizationId", organizationId),
+      )
+      .collect();
+
+    for (const contact of existingContacts) {
+      await ctx.db.delete(contact._id);
+    }
+
+    for (const contact of contacts) {
+      await ctx.db.insert("manualPhoneNumbers", {
+        organizationId,
+        name: contact.name,
+        phoneNumber: contact.phoneNumber,
+      });
+    }
+  },
+});

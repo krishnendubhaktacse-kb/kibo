@@ -73,30 +73,6 @@ export const VapiFormFields = ({
             </FormItem>
         )}
         />
-        <FormField
-            control={form.control}
-            name="vapiSettings.phoneNumber"
-            render={({ field }) => (
-                <FormItem>
-                <FormLabel>Display Phone Number</FormLabel>
-                <FormControl>
-                    <PhoneInput
-                    defaultCountry="IN"
-                    international
-                    value={field.value || undefined}
-                    onChange={(value) => field.onChange(value || "")}
-                    disabled={disabled}
-                    placeholder="Enter phone number"
-                    className="phone-input"
-                    />
-                </FormControl>
-                <FormDescription>
-                    Phone number to display in the widget
-                </FormDescription>
-                <FormMessage />
-                </FormItem>
-            )}
-            />
     </>
   )
 };

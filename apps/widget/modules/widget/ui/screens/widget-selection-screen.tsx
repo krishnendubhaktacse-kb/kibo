@@ -10,7 +10,16 @@ import {
 import { Button } from "@workspace/ui/components/button";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import { useAtomValue, useSetAtom } from "jotai";
-import { contactSessionIdAtomFamily, conversationIdAtom, errorMessageAtom, hasVapiSecretsAtom, organizationIdAtom, screenAtom, widgetSettingsAtom } from "../../atoms/widget-atoms";
+import {
+  contactSessionIdAtomFamily,
+  conversationIdAtom,
+  errorMessageAtom,
+  hasVapiSecretsAtom,
+  manualPhoneNumbersAtom,
+  organizationIdAtom,
+  screenAtom,
+  widgetSettingsAtom,
+} from "../../atoms/widget-atoms";
 import { useAction, useMutation } from "convex/react";
 import { api } from "@workspace/backend/_generated/api";
 import { useState } from "react";
@@ -21,6 +30,7 @@ export const WidgetSelectionScreen = () => {
   const setErrorMessage = useSetAtom(errorMessageAtom);
   const setConversationId = useSetAtom(conversationIdAtom);
   const widgetSettings = useAtomValue(widgetSettingsAtom);
+  const manualPhoneNumbers = useAtomValue(manualPhoneNumbersAtom);
   const hasVapiSecrets = useAtomValue(hasVapiSecretsAtom);
   const organizationId = useAtomValue(organizationIdAtom);
   const contactSessionId = useAtomValue(
@@ -121,7 +131,7 @@ export const WidgetSelectionScreen = () => {
         </Button>
         )}
 
-        {hasVapiSecrets && widgetSettings?.vapiSettings?.phoneNumber && (
+        {manualPhoneNumbers.length > 0 && (
         <Button
           variant="outline"
           className="h-16 w-full justify-between rounded-lg bg-background px-4 shadow-sm"

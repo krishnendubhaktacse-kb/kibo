@@ -3,7 +3,11 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Plus, Trash2 } from "lucide-react";
+import { useQuery } from "convex/react";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css";
 import {
   Card,
   CardContent,
@@ -42,36 +46,34 @@ export const CustomizationForm = ({
   hasVapiPlugin,
 }: CustomizationFormProps) => {
     const upsertWidgetSettings = useMutation(api.private.widgetSettings.upsert);
-    const addManualPhoneNumber = useMutation(api.private.manualPhoneNumbers.add);
+    const saveAllManualPhoneNumbers = useMutation(
+  api.private.manualPhoneNumbers.saveAll,
+);
 
-const [contactName, setContactName] = useState("");
-const [contactPhoneNumber, setContactPhoneNumber] = useState("");
-const [isAddingContact, setIsAddingContact] = useState(false);
+const savedContacts = useQuery(api.private.manualPhoneNumbers.getAll);
 
-const handleAddContact = async () => {
-  if (!contactName.trim() || !contactPhoneNumber.trim()) {
-    toast.error("Enter both a contact name and phone number");
-    return;
-  }
-
-  setIsAddingContact(true);
-
-  try {
-    await addManualPhoneNumber({
-      name: contactName.trim(),
-      phoneNumber: contactPhoneNumber.trim(),
-    });
-
-    setContactName("");
-    setContactPhoneNumber("");
-    toast.success("Contact number added");
-  } catch (error) {
-    console.error(error);
-    toast.error("Could not add contact number");
-  } finally {
-    setIsAddingContact(false);
-  }
+type ContactRow = {
+  name: string;
+  phoneNumber: string;
 };
+
+const [contacts, setContacts] = useState<ContactRow[]>([
+  { name: "", phoneNumber: "" },
+]);
+
+useEffect(() => {
+  if (savedContacts === undefined) return;
+
+  setContacts(
+    savedContacts.length > 0
+      ? savedContacts.map((contact) => ({
+          name: contact.name,
+          phoneNumber: contact.phoneNumber,
+        }))
+      : [{ name: "", phoneNumber: "" }],
+  );
+}, [savedContacts]);
+
     const form = useForm<FormSchema>({
         resolver: zodResolver(widgetSettingsSchema),
         defaultValues: {
@@ -90,29 +92,58 @@ const handleAddContact = async () => {
     });
 
     const onSubmit = async (values: FormSchema) => {
-    try {
-      const vapiSettings: WidgetSettings["vapiSettings"] = {
-        assistantId:
-          values.vapiSettings.assistantId === "none"
-            ? ""
-            : values.vapiSettings.assistantId,
-        phoneNumber:
-          values.vapiSettings.phoneNumber === "none"
-            ? ""
-            : values.vapiSettings.phoneNumber,
-      };
-
-      await upsertWidgetSettings({
-        greetMessage: values.greetMessage,
-        defaultSuggestions: values.defaultSuggestions,
-        vapiSettings,
-    });
-        toast.success("widget settings saved");
-    } catch(error) {
-      console.error(error);
-      toast.error("Something went wrong");
-    }
+  if (savedContacts === undefined) {
+    toast.error("Please wait for contact numbers to load");
+    return;
   }
+
+  const filledContacts = contacts.filter(
+    (contact) =>
+      contact.name.trim() || contact.phoneNumber.trim(),
+  );
+
+  if (
+    filledContacts.some(
+      (contact) =>
+        !contact.name.trim() || !contact.phoneNumber.trim(),
+    )
+  ) {
+    toast.error("Enter both a contact name and phone number for each row");
+    return;
+  }
+
+  try {
+    const vapiSettings: WidgetSettings["vapiSettings"] = {
+      assistantId:
+        values.vapiSettings.assistantId === "none"
+          ? ""
+          : values.vapiSettings.assistantId,
+      phoneNumber:
+        values.vapiSettings.phoneNumber === "none"
+          ? ""
+          : values.vapiSettings.phoneNumber,
+    };
+
+    await upsertWidgetSettings({
+      greetMessage: values.greetMessage,
+      defaultSuggestions: values.defaultSuggestions,
+      vapiSettings,
+    });
+
+    await saveAllManualPhoneNumbers({
+      contacts: filledContacts.map((contact) => ({
+        name: contact.name.trim(),
+        phoneNumber: contact.phoneNumber.trim(),
+      })),
+    });
+
+    toast.success("Widget settings saved");
+  } catch (error) {
+    console.error(error);
+    toast.error("Something went wrong while saving settings");
+  }
+};
+
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
@@ -212,56 +243,6 @@ const handleAddContact = async () => {
 
         </CardContent>
         </Card>
-
-        <Card>
-            <CardHeader>
-                <CardTitle>Contact Numbers</CardTitle>
-                <CardDescription>
-                Add multiple contact numbers to display in your widget.
-                Each contact is saved separately.
-                </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-4">
-                <div className="space-y-2">
-                <FormLabel htmlFor="contactName">Display Name</FormLabel>
-                <Input
-                    id="contactName"
-                    value={contactName}
-                    onChange={(event) => setContactName(event.target.value)}
-                    placeholder="e.g., Customer Support"
-                    disabled={isAddingContact}
-                />
-                </div>
-
-                <div className="space-y-2">
-                <FormLabel htmlFor="contactPhoneNumber">Phone Number</FormLabel>
-                <Input
-                    id="contactPhoneNumber"
-                    type="tel"
-                    value={contactPhoneNumber}
-                    onChange={(event) => setContactPhoneNumber(event.target.value)}
-                    placeholder="e.g., +91 98765 43210"
-                    disabled={isAddingContact}
-                />
-                </div>
-
-                <div className="flex justify-end">
-                <Button
-                    type="button"
-                    onClick={handleAddContact}
-                    disabled={
-                    isAddingContact ||
-                    !contactName.trim() ||
-                    !contactPhoneNumber.trim()
-                    }
-                >
-                    {isAddingContact ? "Adding Contact..." : "Add Contact Number"}
-                </Button>
-                </div>
-            </CardContent>
-            </Card>
-        
         {hasVapiPlugin && (
             <Card>
                 <CardHeader>
@@ -275,6 +256,91 @@ const handleAddContact = async () => {
                 </CardContent>
             </Card>
             )}
+
+            <Card>
+            <CardHeader>
+                <CardTitle>Contact Numbers</CardTitle>
+                <CardDescription>
+                Add and manage multiple contact numbers displayed in your widget.
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+                {contacts.map((contact, index) => (
+                <div key={index} className="space-y-3 rounded-lg border p-4">
+                    <div className="flex items-center justify-between">
+                    <FormLabel>Contact {index + 1}</FormLabel>
+
+                    {contacts.length > 1 && (
+                        <Button
+                        type="button"
+                        variant="ghost"
+                        size="icon"
+                        aria-label={`Remove contact ${index + 1}`}
+                        disabled={form.formState.isSubmitting}
+                        onClick={() =>
+                            setContacts((current) =>
+                            current.filter((_, i) => i !== index),
+                            )
+                        }
+                        >
+                        <Trash2 className="size-4" />
+                        </Button>
+                    )}
+                    </div>
+
+                    <Input
+                    value={contact.name}
+                    placeholder="Contact name, e.g. Customer Support"
+                    disabled={form.formState.isSubmitting}
+                    onChange={(event) =>
+                        setContacts((current) =>
+                        current.map((item, i) =>
+                            i === index
+                            ? { ...item, name: event.target.value }
+                            : item,
+                        ),
+                        )
+                    }
+                    />
+
+                    <PhoneInput
+                    defaultCountry="IN"
+                    international
+                    value={contact.phoneNumber || undefined}
+                    onChange={(value) =>
+                        setContacts((current) =>
+                        current.map((item, i) =>
+                            i === index
+                            ? { ...item, phoneNumber: value || "" }
+                            : item,
+                        ),
+                        )
+                    }
+                    disabled={form.formState.isSubmitting}
+                    placeholder="Enter phone number"
+                    className="phone-input"
+                    />
+                </div>
+                ))}
+
+                <Button
+                type="button"
+                variant="outline"
+                size="icon"
+                aria-label="Add contact number"
+                disabled={form.formState.isSubmitting}
+                onClick={() =>
+                    setContacts((current) => [
+                    ...current,
+                    { name: "", phoneNumber: "" },
+                    ])
+                }
+                >
+                <Plus className="size-4" />
+                </Button>
+            </CardContent>
+            </Card>
 
             <div className="flex justify-end">
                 <Button disabled={form.formState.isSubmitting} type="submit">    
