@@ -6,6 +6,7 @@ import {
   LibraryBigIcon,
   PuzzleIcon,
   MicIcon,
+  PhoneCallIcon,
   PaletteIcon,
   CreditCardIcon,
 } from "lucide-react";
@@ -56,9 +57,9 @@ const menuGroups = [
         icon: PuzzleIcon,
       },
       {
-        title: "Voice Assistant",
+        title: "Voice Call & Contact Support",
         url: "/plugins/vapi",
-        icon: MicIcon,
+        icon: PhoneCallIcon,
       },
     ],
   },
