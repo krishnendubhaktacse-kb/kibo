@@ -131,7 +131,7 @@ export const WidgetSelectionScreen = () => {
         </Button>
         )}
 
-        {manualPhoneNumbers.length > 0 && (
+        {hasVapiSecrets && manualPhoneNumbers.length > 0 && (
         <Button
           variant="outline"
           className="h-16 w-full justify-between rounded-lg bg-background px-4 shadow-sm"
