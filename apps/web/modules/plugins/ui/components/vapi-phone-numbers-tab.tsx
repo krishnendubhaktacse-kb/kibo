@@ -15,9 +15,13 @@ import {
   TableRow,
 } from "@workspace/ui/components/table";
 import { useVapiPhoneNumbers } from "../../hooks/use-vapi-data";
+import { api } from "@workspace/backend/_generated/api";
+import { useQuery } from "convex/react";
 
 export const VapiPhoneNumbersTab = () => {
   const { data: phoneNumbers, isLoading } = useVapiPhoneNumbers();
+  const widgetSettings = useQuery(api.private.widgetSettings.getOne);
+  const customPhoneNumber = widgetSettings?.vapiSettings?.phoneNumber;
 
   return (
     <div className="border-t bg-background">
@@ -68,7 +72,7 @@ export const VapiPhoneNumbersTab = () => {
                   <div className="flex items-center gap-3">
                     <PhoneIcon className="size-4 text-muted-foreground" />
                     <span className="font-mono">
-                      {phone.number || "Not configured"}
+                      {customPhoneNumber || phone.number || "Not configured"}
                     </span>
                   </div>
                 </TableCell>
