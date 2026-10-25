@@ -257,6 +257,7 @@ useEffect(() => {
             </Card>
             )}
 
+          {hasVapiPlugin && (
             <Card>
             <CardHeader>
                 <CardTitle>Contact Numbers</CardTitle>
@@ -344,6 +345,7 @@ useEffect(() => {
                 </Button>
             </CardContent>
             </Card>
+            )}
 
             <div className="flex justify-end">
                 <Button disabled={form.formState.isSubmitting} type="submit">    

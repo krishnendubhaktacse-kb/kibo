@@ -15,7 +15,7 @@ export function MobileSidebarTrigger() {
       "/files": "Knowledge Base",
       "/customization": "Widget Customization",
       "/integrations": "Integrations",
-      "/plugins/vapi": "Voice Assistant",
+      "/plugins/vapi": "Voice Call & Contact Support",
       "/billing": "Plans & Billing",
     } as Record<string, string>)[pathname] ?? "Dashboard";
 
