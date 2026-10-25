@@ -7,7 +7,7 @@ export default defineSchema({
     status: v.string(),
   })
   .index("by_organization_id", ["organizationId"]),
-  widgetSettings: defineTable({
+    widgetSettings: defineTable({
     organizationId: v.string(),
     greetMessage: v.string(),
     defaultSuggestions: v.object({
@@ -19,8 +19,13 @@ export default defineSchema({
       assistantId: v.optional(v.string()),
       phoneNumber: v.optional(v.string()),
     }),
-  })
-  .index("by_organization_id", ["organizationId"]),
+  }).index("by_organization_id", ["organizationId"]),
+    manualPhoneNumbers: defineTable({
+    organizationId: v.string(),
+    name: v.string(),
+    phoneNumber: v.string(),
+  }).index("by_organization_id", ["organizationId"]),
+
   plugins: defineTable({
     organizationId: v.string(),
     service: v.union(v.literal("vapi")),
