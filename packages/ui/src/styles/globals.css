@@ -245,10 +245,20 @@
   background: var(--background);
 }
 
+
 .phone-input .PhoneInputCountrySelect {
   cursor: pointer;
   max-width: 100px;
+  outline: none;
+  box-shadow: none;
 }
+
+.phone-input .PhoneInputCountrySelect:focus,
+.phone-input .PhoneInputCountrySelect:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
 
 .phone-input .PhoneInputCountryIcon {
   width: 20px;
