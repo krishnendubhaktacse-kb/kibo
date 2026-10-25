@@ -3,6 +3,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "@workspace/ui/components/button";
+import { useState } from "react";
 import {
   Card,
   CardContent,
@@ -41,6 +42,36 @@ export const CustomizationForm = ({
   hasVapiPlugin,
 }: CustomizationFormProps) => {
     const upsertWidgetSettings = useMutation(api.private.widgetSettings.upsert);
+    const addManualPhoneNumber = useMutation(api.private.manualPhoneNumbers.add);
+
+const [contactName, setContactName] = useState("");
+const [contactPhoneNumber, setContactPhoneNumber] = useState("");
+const [isAddingContact, setIsAddingContact] = useState(false);
+
+const handleAddContact = async () => {
+  if (!contactName.trim() || !contactPhoneNumber.trim()) {
+    toast.error("Enter both a contact name and phone number");
+    return;
+  }
+
+  setIsAddingContact(true);
+
+  try {
+    await addManualPhoneNumber({
+      name: contactName.trim(),
+      phoneNumber: contactPhoneNumber.trim(),
+    });
+
+    setContactName("");
+    setContactPhoneNumber("");
+    toast.success("Contact number added");
+  } catch (error) {
+    console.error(error);
+    toast.error("Could not add contact number");
+  } finally {
+    setIsAddingContact(false);
+  }
+};
     const form = useForm<FormSchema>({
         resolver: zodResolver(widgetSettingsSchema),
         defaultValues: {
@@ -181,6 +212,55 @@ export const CustomizationForm = ({
 
         </CardContent>
         </Card>
+
+        <Card>
+            <CardHeader>
+                <CardTitle>Contact Numbers</CardTitle>
+                <CardDescription>
+                Add multiple contact numbers to display in your widget.
+                Each contact is saved separately.
+                </CardDescription>
+            </CardHeader>
+
+            <CardContent className="space-y-4">
+                <div className="space-y-2">
+                <FormLabel htmlFor="contactName">Display Name</FormLabel>
+                <Input
+                    id="contactName"
+                    value={contactName}
+                    onChange={(event) => setContactName(event.target.value)}
+                    placeholder="e.g., Customer Support"
+                    disabled={isAddingContact}
+                />
+                </div>
+
+                <div className="space-y-2">
+                <FormLabel htmlFor="contactPhoneNumber">Phone Number</FormLabel>
+                <Input
+                    id="contactPhoneNumber"
+                    type="tel"
+                    value={contactPhoneNumber}
+                    onChange={(event) => setContactPhoneNumber(event.target.value)}
+                    placeholder="e.g., +91 98765 43210"
+                    disabled={isAddingContact}
+                />
+                </div>
+
+                <div className="flex justify-end">
+                <Button
+                    type="button"
+                    onClick={handleAddContact}
+                    disabled={
+                    isAddingContact ||
+                    !contactName.trim() ||
+                    !contactPhoneNumber.trim()
+                    }
+                >
+                    {isAddingContact ? "Adding Contact..." : "Add Contact Number"}
+                </Button>
+                </div>
+            </CardContent>
+            </Card>
         
         {hasVapiPlugin && (
             <Card>

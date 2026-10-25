@@ -2,7 +2,7 @@
 
 import { useAtomValue, useSetAtom } from "jotai";
 import { LoaderIcon } from "lucide-react";
-import { contactSessionIdAtomFamily, errorMessageAtom, loadingMessageAtom, organizationIdAtom, screenAtom, vapiSecretsAtom, widgetSettingsAtom } from "@/modules/widget/atoms/widget-atoms";
+import { contactSessionIdAtomFamily, errorMessageAtom, loadingMessageAtom, manualPhoneNumbersAtom, organizationIdAtom, screenAtom, vapiSecretsAtom, widgetSettingsAtom } from "@/modules/widget/atoms/widget-atoms";
 import { WidgetHeader } from "@/modules/widget/ui/components/widget-header";
 import { useEffect, useState } from "react";
 import { useAction, useMutation, useQuery } from "convex/react";
@@ -20,6 +20,7 @@ export const WidgetLoadingScreen = ({ organizationId }: { organizationId: string
   const setErrorMessage = useSetAtom(errorMessageAtom);
   const setScreen = useSetAtom(screenAtom);
   const setVapiSecrets = useSetAtom(vapiSecretsAtom);
+  const setManualPhoneNumbers = useSetAtom(manualPhoneNumbersAtom);
 
   const contactSessionId = useAtomValue(contactSessionIdAtomFamily(organizationId || ""));
 
@@ -87,6 +88,12 @@ export const WidgetLoadingScreen = ({ organizationId }: { organizationId: string
       organizationId,
     } : "skip",
   );
+
+  const manualPhoneNumbers = useQuery(
+    api.public.manualPhoneNumbers.getAllByOrganizationId,
+    organizationId ? { organizationId } : "skip",
+  );
+
   useEffect(() => {
     if (step !== "settings") {
       return;
@@ -94,17 +101,23 @@ export const WidgetLoadingScreen = ({ organizationId }: { organizationId: string
 
     setLoadingMessage("Loading widget settings...");
 
-    if (widgetSettings !== undefined) {
+    if (
+      widgetSettings !== undefined &&
+      manualPhoneNumbers !== undefined
+    ) {
       setWidgetSettings(widgetSettings);
+      setManualPhoneNumbers(manualPhoneNumbers);
       setStep("vapi");
     }
   }, [
-    step,
-    widgetSettings,
-    setStep,
-    setWidgetSettings,
-    setLoadingMessage,
-  ]);
+      step,
+      widgetSettings,
+      manualPhoneNumbers,
+      setStep,
+      setWidgetSettings,
+      setManualPhoneNumbers,
+      setLoadingMessage,
+    ]);
 
   const getVapiSecrets = useAction(api.public.secrets.getVapiSecrets);
   useEffect(() => {
