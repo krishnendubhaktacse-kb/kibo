@@ -234,7 +234,7 @@
   width: 100%;
 }
 
-
+/* Country selector */
 .phone-input .PhoneInputCountry {
   position: relative;
   display: flex;
@@ -248,9 +248,8 @@
   background: var(--background);
 }
 
+/* Country flag */
 .phone-input .PhoneInputCountryIcon {
-  position: relative;
-  z-index: 1;
   display: block;
   flex: 0 0 20px;
   width: 20px;
@@ -258,24 +257,13 @@
   box-shadow: none;
 }
 
+/* Native country selector */
 .phone-input .PhoneInputCountrySelect {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  width: 100%;
-  height: 100%;
   cursor: pointer;
-  opacity: 0;
+  max-width: 100px;
   outline: none;
   box-shadow: none;
 }
-
-.phone-input .PhoneInputCountrySelectArrow {
-  flex: 0 0 auto;
-  margin-left: 2px;
-  opacity: 0.6;
-}
-
 
 .phone-input .PhoneInputCountrySelect:focus,
 .phone-input .PhoneInputCountrySelect:focus-visible {
@@ -283,17 +271,14 @@
   box-shadow: none;
 }
 
-
-.phone-input .PhoneInputCountryIcon {
-  width: 20px;
-  height: 15px;
-  box-shadow: none;
-}
-
+/* Dropdown arrow */
 .phone-input .PhoneInputCountrySelectArrow {
+  flex: 0 0 auto;
+  margin-left: 2px;
   opacity: 0.6;
 }
 
+/* Phone number field */
 .phone-input .PhoneInputInput {
   min-width: 0;
   width: 100%;
@@ -309,13 +294,15 @@
 
 .phone-input .PhoneInputInput:focus {
   border-color: var(--ring);
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 20%, transparent);
+  box-shadow: 0 0 0 2px
+    color-mix(in oklab, var(--ring) 20%, transparent);
 }
 
 .phone-input .PhoneInputInput::placeholder {
   color: var(--muted-foreground);
 }
 
+/* Disabled state */
 .phone-input .PhoneInputInput:disabled,
 .phone-input .PhoneInputCountrySelect:disabled {
   cursor: not-allowed;
