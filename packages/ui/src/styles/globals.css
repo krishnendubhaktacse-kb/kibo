@@ -224,3 +224,27 @@
     font-weight: 500;
   }
 }
+
+
+/* Simple border for the phone input */
+.phone-input {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 0 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.phone-input .PhoneInputInput {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.phone-input .PhoneInputInput:focus {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
