@@ -303,24 +303,27 @@ useEffect(() => {
                         )
                     }
                     />
-
+                  <div className="flex items-center gap-3">
                     <PhoneInput
-                    defaultCountry="IN"
-                    international
-                    value={contact.phoneNumber || undefined}
-                    onChange={(value) =>
+                      defaultCountry="IN"
+                      international
+                      countryCallingCodeEditable={false}
+                      value={contact.phoneNumber || undefined}
+                      onChange={(value) =>
                         setContacts((current) =>
-                        current.map((item, i) =>
+                          current.map((item, i) =>
                             i === index
-                            ? { ...item, phoneNumber: value || "" }
-                            : item,
-                        ),
+                              ? { ...item, phoneNumber: value || "" }
+                              : item,
+                          ),
                         )
-                    }
-                    disabled={form.formState.isSubmitting}
-                    placeholder="Enter phone number"
-                    className="phone-input"
+                      }
+                      disabled={form.formState.isSubmitting}
+                      className="phone-input flex-1"
+                      placeholder="Enter phone number"
                     />
+                  </div>
+
                 </div>
                 ))}
 

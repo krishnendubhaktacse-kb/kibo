@@ -224,3 +224,66 @@
     font-weight: 500;
   }
 }
+
+
+/* KIBO Contact Phone Input */
+.phone-input {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.phone-input .PhoneInputCountry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--background);
+}
+
+.phone-input .PhoneInputCountrySelect {
+  cursor: pointer;
+  max-width: 100px;
+}
+
+.phone-input .PhoneInputCountryIcon {
+  width: 20px;
+  height: 15px;
+  box-shadow: none;
+}
+
+.phone-input .PhoneInputCountrySelectArrow {
+  opacity: 0.6;
+}
+
+.phone-input .PhoneInputInput {
+  min-width: 0;
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--background);
+  color: var(--foreground);
+  font: inherit;
+  outline: none;
+}
+
+.phone-input .PhoneInputInput:focus {
+  border-color: var(--ring);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--ring) 20%, transparent);
+}
+
+.phone-input .PhoneInputInput::placeholder {
+  color: var(--muted-foreground);
+}
+
+.phone-input .PhoneInputInput:disabled,
+.phone-input .PhoneInputCountrySelect:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
