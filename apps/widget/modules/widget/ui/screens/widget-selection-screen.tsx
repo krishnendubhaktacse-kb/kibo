@@ -5,6 +5,7 @@ import {
   MicIcon,
   PhoneIcon,
   ChevronRightIcon,
+  StarIcon,
 } from "lucide-react";
 
 import { Button } from "@workspace/ui/components/button";
@@ -149,6 +150,24 @@ export const WidgetSelectionScreen = () => {
           <ChevronRightIcon className="size-4 text-muted-foreground" />
         </Button>
         )}
+
+        {/* Share Feedback */}
+        <Button
+          variant="outline"
+          className="h-16 w-full justify-between rounded-lg bg-background px-4 shadow-sm"
+          onClick={() => setScreen("feedback")}
+          disabled={isPending}
+        >
+          <div className="flex items-center gap-x-3">
+            <StarIcon className="size-4 text-muted-foreground" />
+
+            <span className="text-sm font-normal">
+              Share Feedback
+            </span>
+          </div>
+
+          <ChevronRightIcon className="size-4 text-muted-foreground" />
+        </Button>
       </div>
       <WidgetFooter />
     </>

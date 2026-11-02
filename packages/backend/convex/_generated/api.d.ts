@@ -24,6 +24,7 @@ import type * as private_vapi from "../private/vapi.js";
 import type * as private_widgetSettings from "../private/widgetSettings.js";
 import type * as public_contactSessions from "../public/contactSessions.js";
 import type * as public_conversations from "../public/conversations.js";
+import type * as public_feedback from "../public/feedback.js";
 import type * as public_manualPhoneNumbers from "../public/manualPhoneNumbers.js";
 import type * as public_messages from "../public/messages.js";
 import type * as public_organizations from "../public/organizations.js";
@@ -65,6 +66,7 @@ declare const fullApi: ApiFromModules<{
   "private/widgetSettings": typeof private_widgetSettings;
   "public/contactSessions": typeof public_contactSessions;
   "public/conversations": typeof public_conversations;
+  "public/feedback": typeof public_feedback;
   "public/manualPhoneNumbers": typeof public_manualPhoneNumbers;
   "public/messages": typeof public_messages;
   "public/organizations": typeof public_organizations;

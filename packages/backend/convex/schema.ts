@@ -71,6 +71,21 @@ export default defineSchema({
   })
   .index("by_organization_id", ["organizationId"])
   .index("by_expires_at", ["expiresAt"]),
+    feedback: defineTable({
+    organizationId: v.string(),
+    rating: v.number(),
+    comment: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_organization_id", ["organizationId"])
+    .index("by_organization_id_and_created_at", [
+      "organizationId",
+      "createdAt",
+    ])
+    .index("by_organization_id_and_rating", [
+      "organizationId",
+      "rating",
+    ]),
   users: defineTable({
     name: v.string(),
   }),
