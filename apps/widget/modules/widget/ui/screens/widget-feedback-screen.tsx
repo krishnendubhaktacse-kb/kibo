@@ -68,22 +68,15 @@ export const WidgetFeedbackScreen = () => {
   return (
     <>
       <WidgetHeader>
-        <div className="flex items-center gap-3 bg-gradient-to-b from-blue-500 to-sky-500 px-5 py-5 text-white">
-          <button
-            type="button"
+        <div className="flex items-center gap-x-2">
+          <Button
+            variant="transparent"
+            size="icon"
             onClick={() => setScreen("selection")}
-            className="rounded-full p-1 hover:bg-white/10"
-            aria-label="Go back"
           >
-            <ArrowLeftIcon className="size-5" />
-          </button>
-
-          <div>
-            <h1 className="text-xl font-semibold">Share Feedback</h1>
-            <p className="mt-1 text-sm text-blue-100">
-              Tell us about your support experience.
-            </p>
-          </div>
+            <ArrowLeftIcon />
+          </Button>
+          <p>Share Feedback</p>
         </div>
       </WidgetHeader>
 
