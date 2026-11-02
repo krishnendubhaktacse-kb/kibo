@@ -21,7 +21,6 @@ import {
 } from "../../atoms/widget-atoms";
 
 import { WidgetHeader } from "../components/widget-header";
-import { WidgetFooter } from "../components/widget-footer";
 
 export const WidgetFeedbackScreen = () => {
   const setScreen = useSetAtom(screenAtom);
@@ -178,8 +177,6 @@ export const WidgetFeedbackScreen = () => {
           </div>
         )}
       </div>
-
-      <WidgetFooter />
     </>
   );
 };
