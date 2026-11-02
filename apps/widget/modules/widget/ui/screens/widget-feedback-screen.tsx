@@ -88,7 +88,7 @@ export const WidgetFeedbackScreen = () => {
         </div>
       </WidgetHeader>
 
-      <div className="flex flex-1 flex-col overflow-y-auto bg-muted p-5">
+      <div className="flex flex-1 min-h-0 min-w-0 flex-col overflow-y-auto overflow-x-hidden bg-muted p-5">
         {isSubmitted ? (
           <div className="flex flex-1 flex-col items-center justify-center text-center">
             <CheckCircle2Icon className="mb-4 size-14 text-green-600" />
@@ -109,7 +109,7 @@ export const WidgetFeedbackScreen = () => {
             </Button>
           </div>
         ) : (
-          <div className="flex flex-1 flex-col gap-5">
+          <div className="flex flex-1 min-w-0 flex-col gap-5">
             <div className="rounded-lg border bg-background p-4 shadow-sm">
               <h2 className="text-base font-semibold">
                 How was your overall support experience?

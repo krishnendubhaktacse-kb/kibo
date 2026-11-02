@@ -9,6 +9,7 @@ import {
   PhoneCallIcon,
   PaletteIcon,
   CreditCardIcon,
+  MessageSquareTextIcon,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -34,6 +35,11 @@ const menuGroups = [
         title: "Conversations",
         url: "/conversations",
         icon: InboxIcon,
+      },
+      {
+        title: "Feedback",
+        url: "/feedback",
+        icon: MessageSquareTextIcon,
       },
       {
         title: "Knowledge Base",
