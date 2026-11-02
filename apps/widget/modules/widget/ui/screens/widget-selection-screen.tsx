@@ -94,7 +94,7 @@ export const WidgetSelectionScreen = () => {
         </div>
       </WidgetHeader>
 
-      <div className="flex flex-1 flex-col gap-y-3 overflow-y-auto bg-muted p-4">
+      <div className="flex flex-1 flex-col gap-y-3 overflow-y-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden bg-muted p-4">
         {/* Start Chat */}
         <Button
           variant="outline"
