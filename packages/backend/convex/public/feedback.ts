@@ -49,6 +49,7 @@ export const submit = mutation({
 
     return await ctx.db.insert("feedback", {
       organizationId: args.organizationId,
+      contactSessionId: args.contactSessionId,
       rating: args.rating,
       comment: comment || undefined,
       createdAt: Date.now(),

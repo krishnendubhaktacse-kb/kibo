@@ -73,6 +73,7 @@ export default defineSchema({
   .index("by_expires_at", ["expiresAt"]),
     feedback: defineTable({
     organizationId: v.string(),
+    contactSessionId: v.optional(v.id("contactSessions")),
     rating: v.number(),
     comment: v.optional(v.string()),
     createdAt: v.number(),

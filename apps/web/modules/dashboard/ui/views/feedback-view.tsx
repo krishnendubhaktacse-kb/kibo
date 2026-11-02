@@ -118,6 +118,7 @@ export const FeedbackView = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="px-6 py-4">Name</TableHead>
                 <TableHead className="px-6 py-4">Rating</TableHead>
                 <TableHead className="px-6 py-4">Comment</TableHead>
                 <TableHead className="px-6 py-4">Submitted On</TableHead>
@@ -129,7 +130,7 @@ export const FeedbackView = () => {
                 if (isLoadingFirstPage) {
                   return (
                     <TableRow>
-                      <TableCell colSpan={3} className="h-24 text-center">
+                      <TableCell colSpan={4} className="h-24 text-center">
                         Loading feedback...
                       </TableCell>
                     </TableRow>
@@ -139,7 +140,7 @@ export const FeedbackView = () => {
                 if (feedback.results.length === 0) {
                   return (
                     <TableRow>
-                      <TableCell colSpan={3} className="h-24 text-center">
+                      <TableCell colSpan={4} className="h-24 text-center">
                         No feedback received yet.
                       </TableCell>
                     </TableRow>
@@ -148,6 +149,11 @@ export const FeedbackView = () => {
 
                 return feedback.results.map((item) => (
                   <TableRow key={item._id} className="hover:bg-muted/50">
+
+                    <TableCell className="px-6 py-4">
+                      <span className="font-medium">{item.name}</span>
+                    </TableCell>
+
                     <TableCell className="px-6 py-4">
                       <div className="flex items-center gap-1">
                         {Array.from({ length: 5 }, (_, index) => (

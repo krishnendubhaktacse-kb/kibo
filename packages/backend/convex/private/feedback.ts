@@ -34,13 +34,31 @@ export const list = query({
   handler: async (ctx, args) => {
     const organizationId = await getOrganizationId(ctx);
 
-    return await ctx.db
+    const result = await ctx.db
       .query("feedback")
       .withIndex("by_organization_id_and_created_at", (q) =>
         q.eq("organizationId", organizationId)
       )
       .order("desc")
       .paginate(args.paginationOpts);
+
+    const page = await Promise.all(
+      result.page.map(async (item) => {
+        const contactSession = item.contactSessionId
+          ? await ctx.db.get(item.contactSessionId)
+          : null;
+
+        return {
+          ...item,
+          name: contactSession?.name ?? "Unknown",
+        };
+      })
+    );
+
+    return {
+      ...result,
+      page,
+    };
   },
 });
 
