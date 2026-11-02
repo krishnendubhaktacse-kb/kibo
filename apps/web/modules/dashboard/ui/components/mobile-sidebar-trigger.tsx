@@ -12,6 +12,7 @@ export function MobileSidebarTrigger() {
   const pageTitle =
     ({
       "/conversations": "Conversations",
+      "/feedback": "Feedback",
       "/files": "Knowledge Base",
       "/customization": "Widget Customization",
       "/integrations": "Integrations",
